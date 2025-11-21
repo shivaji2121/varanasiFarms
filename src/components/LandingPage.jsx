@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingBag, Star, Users, Package, TrendingUp } from 'lucide-react';
 
 const LandingPage = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const token = localStorage.getItem('token');
+    return !!token;
+  });
+
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
@@ -19,12 +29,23 @@ const LandingPage = () => {
               </span>
             </div>
             <div className="flex items-center space-x-4">
-              <Link to="/login" className="text-gray-700 hover:text-indigo-600 font-medium transition duration-300">
-                Sign In
-              </Link>
-              <Link to="/signup" className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition duration-300">
-                Get Started
-              </Link>
+              {isLoggedIn ? (
+                <button
+                  onClick={handleLogout}
+                  className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition duration-300"
+                >
+                  Logout
+                </button>
+              ) : (
+                <>
+                  <Link to="/login" className="text-gray-700 hover:text-indigo-600 font-medium transition duration-300">
+                    Sign In
+                  </Link>
+                  <Link to="/signup" className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition duration-300">
+                    Get Started
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>

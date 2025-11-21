@@ -1,25 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingBag, Eye, EyeOff } from 'lucide-react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer, toast } from 'react-toastify';
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Check if user is already logged in
-    const token = localStorage.getItem('token');
-    if (token) {
-      navigate('/');
-    }
-  }, [navigate]);
 
   const handleChange = (e) => {
     setFormData({
@@ -46,12 +37,11 @@ const Login = () => {
       if (response.ok) {
         localStorage.setItem('token', data.token);
         toast.success('Login successful!');
-        navigate('/');
+        navigate('/home')
       } else {
         toast.error(data.message || 'Login failed');
       }
-    } catch (err) {
-      console.err('err: ', err);
+    } catch {
       toast.error('Network error. Please try again.');
     } finally {
       setLoading(false);
